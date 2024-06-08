@@ -40,13 +40,18 @@ function App() {
     setFormData(defaultFormData);
   };
 
+  const closeModal = (e) => {
+    if (e.target.id === "modalContainer") {
+      toggleModal(false);
+    }
+  };
+
   useEffect(() => {
-    document.getElementById("root").addEventListener("click", (e) => {
-      if (e.target.id === "modalContainer") {
-        toggleModal(false);
-      }
-    });
-  }, []);
+    if (modalOpened)
+      document.getElementById("root").addEventListener("click", closeModal);
+    else
+      document.getElementById("root").removeEventListener("click", closeModal);
+  }, [modalOpened]);
 
   return (
     <>
