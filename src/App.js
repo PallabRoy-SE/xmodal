@@ -135,7 +135,9 @@ function App() {
                       />
                     </Form.Group>
                     <div className="d-flex align-items-center justify-content-center">
-                      <Button type="submit">Submit</Button>
+                      <Button className="submit-button" type="submit">
+                        Submit
+                      </Button>
                     </div>
                   </Form>
                 </div>
