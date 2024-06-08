@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
 
 const defaultFormData = {
   name: "",
@@ -36,13 +36,17 @@ function App() {
     return regExp.test(email);
   };
 
-  const onCloseModal = () => {
-    toggleModal(false);
-    clearModalData();
-  };
   const clearModalData = () => {
     setFormData(defaultFormData);
   };
+
+  useEffect(() => {
+    document.getElementById("root").addEventListener("click", (e) => {
+      if (e.target.id === "modalContainer") {
+        toggleModal(false);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -52,60 +56,89 @@ function App() {
           <Button onClick={() => toggleModal(true)}>Open Form</Button>
         </div>
       </div>
-      <Modal show={modalOpened} onHide={onCloseModal}>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <h4 className="text-center">Fill Details</h4>
-            <Form.Group className="mb-3" controlId="username">
-              <Form.Label>Username:</Form.Label>
-              <Form.Control
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email Address:</Form.Label>
-              <Form.Control
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
-                }
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="phone">
-              <Form.Label>Phone Number:</Form.Label>
-              <Form.Control
-                type="tel"
-                required
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, phone: e.target.value }))
-                }
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="dob">
-              <Form.Label>Date of Birth:</Form.Label>
-              <Form.Control
-                type="date"
-                required
-                value={formData.dob}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, dob: e.target.value }))
-                }
-              />
-            </Form.Group>
-            <div className="d-flex align-items-center justify-content-center">
-              <Button type="submit">Submit</Button>
+
+      {modalOpened ? (
+        <>
+          <div className="fade modal-backdrop show"></div>
+
+          <div
+            id="modalContainer"
+            role="dialog"
+            aria-modal="true"
+            className="fade modal show"
+            style={{ display: "block" }}
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-body">
+                  <Form onSubmit={handleSubmit}>
+                    <h4 className="text-center">Fill Details</h4>
+                    <Form.Group className="mb-3" controlId="username">
+                      <Form.Label>Username:</Form.Label>
+                      <Form.Control
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="email">
+                      <Form.Label>Email Address:</Form.Label>
+                      <Form.Control
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="phone">
+                      <Form.Label>Phone Number:</Form.Label>
+                      <Form.Control
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="dob">
+                      <Form.Label>Date of Birth:</Form.Label>
+                      <Form.Control
+                        type="date"
+                        required
+                        value={formData.dob}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            dob: e.target.value,
+                          }))
+                        }
+                      />
+                    </Form.Group>
+                    <div className="d-flex align-items-center justify-content-center">
+                      <Button type="submit">Submit</Button>
+                    </div>
+                  </Form>
+                </div>
+              </div>
             </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
+          </div>
+        </>
+      ) : null}
     </>
   );
 }
